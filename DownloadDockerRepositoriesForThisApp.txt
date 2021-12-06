@@ -15,7 +15,8 @@ Then follow steps given below  :
 
 //////////////////////Prepare MYSQL program inside docker////////////////////////////////
 
-Note : You need to download project files and store in a specific folder.Then get command prompt  of that folder.In following lines to make it simple I wrote "c:\>" but the real directory is
+Note : You need to download project files and store in a specific folder.Then get command prompt  of that folder.
+In following lines to make it simple I wrote "c:\>" but the real directory is
 your project folder's directory like c:\...\myprojectfolder\> 
 
 
