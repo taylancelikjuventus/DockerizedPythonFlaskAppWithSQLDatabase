@@ -1,0 +1,104 @@
+Note : this application is written in Windows 10.
+Technologies used : Python Flask,SQLAlchemy,Docker,Mysql database.
+Docker version : 20.10.10
+
+        
+To run this application inside docker containers do followings :
+
+1.download following image that has source code of project
+docker pull taylancelikjuventusdockerid/myapp2
+
+2.then download following image that is just mysql program to be run in docker. 
+docker pull taylancelikjuventusdockerid/mysql
+
+Then follow steps given below  :
+
+//////////////////////Prepare MYSQL program inside docker////////////////////////////////
+
+Note : You need to download project files and store in a specific folder.Then get command prompt  of that folder.In following lines to make it simple I wrote "c:\>" but the real directory is
+your project folder's directory like c:\...\myprojectfolder\> 
+
+
+step 1: this will download and run mysql program inside docker
+c:\>docker run --name mysql_myapp2 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d taylancelikjuventusdockerid/mysql
+
+step 2:copy xxx.sql file from project folder to docker container named "mysql_myapp2".
+c:\>docker cp xxx.sql mysql_myapp2:/xxx.sql
+
+step 3:get bash of container "mysql_myapp2".
+c:\>docker exec -it mysql_myapp2 bash
+
+step 4:access/run mysql program inside mysql_myapp2 container(not "-p password" but "-ppassword")
+c:\>mysql -u root -ppassword
+
+step 5:check available databases
+mysql>show databases;
+
+step 6: create new database named "xxx" .
+mysql>create database xxx;
+
+step 7: use database "xxx"
+mysql>use xxx;
+
+step 8: This is the most important step!We import database from "xxx.sql" to "xxx" named database
+        which is newly created at step 7 and it has no tables.
+mysql>source xxx.sql
+
+step 9 : check if table student is imported properly
+mysql> use xxx;
+mysql> show tables;
+mysql> select * from student;
+
+Now you should be able to see 14 rows of table "student" are listed on console. 
+
+step 10: Type "exit" and hit Enter till you get back to project folder in command line.
+
+step 11: We are done with mysql inside docker.Make sure mysql_myapp2 is still running 
+c:\>docker images  
+
+step 12: run "taylancelikjuventusdockerid\myapp2" image
+c:\>docker run -p 5000:5000 -d taylancelikjuventusdockerid/myapp2
+
+step 13 : Check once again the all running  containers
+c:\>docker ps
+
+After this command you should see  both containers should be running.The  output should look like below:
+
+CONTAINER ID   IMAGE                                COMMAND                  CREATED             STATUS          PORTS                               NAMES
+c17d17ddcec6   taylancelikjuventusdockerid/myapp2   "python app.py"          57 minutes ago      Up 13 seconds   0.0.0.0:5000->5000/tcp              zen_brahmagupta
+3c2487c6c647   taylancelikjuventusdockerid/mysql    "docker-entrypoint.s…"   About an hour ago   Up 20 seconds   0.0.0.0:3306->3306/tcp, 33060/tcp   mysql_myapp2
+
+step 14: Finally open your web browser and type following and hit enter
+
+http://localhost:5000 
+
+you should be able to see students are listed .Then write following url and hit enter
+
+http://localhost:5000/test
+
+this url prints "test is OK"  text.
+
+
+This program just demonstrates how to dockerize any program driven by SQL database.
+This is why I supported only 2 endpoints in "app.py" program. 
+Thanks for reading.
+
+////////////////////////////////////////END/////////////////////////////////////////
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
